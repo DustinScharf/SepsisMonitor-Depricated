@@ -94,3 +94,4 @@ lint/tmp/
 
 # Own adds
 .idea/misc.xml
+.idea/deploymentTargetDropDown.xml
