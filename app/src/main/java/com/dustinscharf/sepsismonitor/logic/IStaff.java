@@ -4,7 +4,7 @@ import com.dustinscharf.sepsismonitor.util.ICallback;
 
 import java.util.Map;
 
-public interface IStaff {
+public interface IStaff extends IPerson {
     public void getId(ICallback<String> callback);
 
     public void getPassword(ICallback<String> callback);
