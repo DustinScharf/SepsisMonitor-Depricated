@@ -10,7 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SepsisMonitor">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.StartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
