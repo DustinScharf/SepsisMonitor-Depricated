@@ -5,9 +5,7 @@ dependencyResolutionManagement {
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
     }
-    dependencies {
-        classpath 'com.google.gms:google-services:4.3.10'
-    }
 }
+
 rootProject.name = "SepsisMonitor"
 include ':app'
