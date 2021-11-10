@@ -5,11 +5,19 @@ import com.dustinscharf.sepsismonitor.util.ICallback;
 import java.util.Map;
 
 public interface IDataAccess {
+    public static IDataAccess getNewInstance(String reference) {
+        return new DataAccess(reference);
+    }
+
+    public void fetchContainer(String containerKey, ICallback<Map<String, Object>> callback);
+
+    public void fetchContainerItem(String containerKey, String itemKey, ICallback<Map<String, Object>> callback);
+
     public void subscribeContainer(String containerKey, ICallback<Map<String, Object>> callback);
 
     public void subscribeContainerItem(String containerKey, String itemKey, ICallback<Map<String, Object>> callback);
 
-    public void addItemToContainer(String containerKey, Map<String, Object> addItem);
+    public void addItemToContainer(String containerKey, String itemKey, Map<String, Object> addItem);
 
     public void editItemInContainer(String containerKey, String itemKey, Map<String, Object> editItem);
 

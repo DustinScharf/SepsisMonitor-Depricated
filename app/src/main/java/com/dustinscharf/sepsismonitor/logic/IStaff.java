@@ -1,11 +1,17 @@
 package com.dustinscharf.sepsismonitor.logic;
 
+import com.dustinscharf.sepsismonitor.data.DataAccess;
+import com.dustinscharf.sepsismonitor.data.IDataAccess;
 import com.dustinscharf.sepsismonitor.util.ICallback;
 
 import java.util.Map;
 
 public interface IStaff extends IPerson {
-    public void getId(ICallback<String> callback);
+    public static IStaff getNewInstance(String id) {
+        return new Staff(id);
+    }
+
+    public String getId();
 
     public void getPassword(ICallback<String> callback);
 
