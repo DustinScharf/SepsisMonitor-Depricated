@@ -1,10 +1,8 @@
 package com.dustinscharf.sepsismonitor.data;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.dustinscharf.sepsismonitor.util.ICallback;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,13 +12,38 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Map;
 
 public class DataAccess implements IDataAccess {
+    private static DataAccess dataAccessSingleton;
+
+    public static DataAccess getInstance() {
+        if (dataAccessSingleton == null) {
+            dataAccessSingleton = new DataAccess();
+        }
+        return dataAccessSingleton;
+    }
+
     private static final String URL = "https://sepsismonitor-default-rtdb.europe-west1.firebasedatabase.app";
+    private static final String REFERENCE = "hospital";
 
     private final DatabaseReference databaseReference;
 
-    public DataAccess(String reference) {
+    private DataAccess() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance(URL);
-        this.databaseReference = firebaseDatabase.getReference(reference);
+        this.databaseReference = firebaseDatabase.getReference(REFERENCE);
+    }
+
+    @Override
+    public void fetch(ICallback<Map<String, Object>> callback) {
+        this.databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // TODO ERROR HANDLE
+            }
+        });
     }
 
     @Override
@@ -29,7 +52,6 @@ public class DataAccess implements IDataAccess {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
-                databaseReference.removeEventListener(this); // prevents recalls
             }
 
             @Override
@@ -45,7 +67,21 @@ public class DataAccess implements IDataAccess {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
-                databaseReference.removeEventListener(this); // prevents recalls
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // TODO ERROR HANDLE
+            }
+        });
+    }
+
+    @Override
+    public void subscribe(ICallback<Map<String, Object>> callback) {
+        this.databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
             }
 
             @Override
@@ -57,7 +93,7 @@ public class DataAccess implements IDataAccess {
 
     @Override
     public void subscribeContainer(String containerKey, ICallback<Map<String, Object>> callback) {
-        this.databaseReference.child(containerKey).addListenerForSingleValueEvent(new ValueEventListener() {
+        this.databaseReference.child(containerKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
@@ -72,7 +108,7 @@ public class DataAccess implements IDataAccess {
 
     @Override
     public void subscribeContainerItem(String containerKey, String itemKey, ICallback<Map<String, Object>> callback) {
-        this.databaseReference.child(containerKey).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
+        this.databaseReference.child(containerKey).child(itemKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 System.out.println(snapshot);
