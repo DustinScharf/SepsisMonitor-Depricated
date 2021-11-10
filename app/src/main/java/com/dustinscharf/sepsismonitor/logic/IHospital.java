@@ -9,7 +9,32 @@ public interface IHospital {
         return new Hospital();
     }
 
-    public void tryLogin(String id, String password, ICallback<IStaff> callback);
+    // Hospital access
+    public void fetchHospital(ICallback<Map<String, Object>> callback);
+
+    public void subscribeHospital(ICallback<Map<String, Object>> callback);
+
+    // Staff access
+    public void fetchStaff(ICallback<Map<String, Object>> callback);
+
+    public void fetchSingleStaff(String staffId, ICallback<Map<String, Object>> callback);
+
+
+    public void subscribeStaff(ICallback<Map<String, Object>> callback);
+
+    public void subscribeSingleStaff(String staffId, ICallback<Map<String, Object>> callback);
+
+    // Patient access
+    public void fetchPatients(ICallback<Map<String, Object>> callback);
+
+    public void fetchSinglePatient(String patientId, ICallback<Map<String, Object>> callback);
+
+
+    public void subscribePatients(ICallback<Map<String, Object>> callback);
+
+    public void subscribeSinglePatient(String patientId, ICallback<Map<String, Object>> callback);
+
+    public boolean tryLogin(Map<String, Object> singleStaffMap, String id, String password);
 
     public void getStaff(ICallback<Map<IStaff, Boolean>> callback);
 

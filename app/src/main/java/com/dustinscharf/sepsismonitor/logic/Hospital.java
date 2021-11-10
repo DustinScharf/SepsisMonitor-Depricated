@@ -10,21 +10,61 @@ public class Hospital implements IHospital {
     private final IDataAccess dataAccess;
 
     public Hospital() {
-        this.dataAccess = IDataAccess.getNewInstance("hospital");
+        this.dataAccess = IDataAccess.getInstance();
+    }
+
+    // Hospital access
+    public void fetchHospital(ICallback<Map<String, Object>> callback) {
+        this.dataAccess.fetch(callback);
+    }
+
+    public void subscribeHospital(ICallback<Map<String, Object>> callback) {
+        this.dataAccess.subscribe(callback);
+    }
+
+    // Staff access
+    public void fetchStaff(ICallback<Map<String, Object>> callback) {
+        this.dataAccess.fetchContainer("staff", callback);
+    }
+
+    public void fetchSingleStaff(String staffId, ICallback<Map<String, Object>> callback) {
+        this.dataAccess.fetchContainerItem("staff", staffId, callback);
+    }
+
+
+    public void subscribeStaff(ICallback<Map<String, Object>> callback) {
+        this.dataAccess.subscribeContainer("staff", callback);
+    }
+
+    public void subscribeSingleStaff(String staffId, ICallback<Map<String, Object>> callback) {
+        this.dataAccess.subscribeContainerItem("staff", staffId, callback);
+    }
+
+    // Patient access
+    public void fetchPatients(ICallback<Map<String, Object>> callback) {
+        this.dataAccess.fetchContainer("patients", callback);
+    }
+
+    public void fetchSinglePatient(String patientId, ICallback<Map<String, Object>> callback) {
+        this.dataAccess.fetchContainerItem("patients", patientId, callback);
+    }
+
+
+    public void subscribePatients(ICallback<Map<String, Object>> callback) {
+        this.dataAccess.subscribeContainer("patients", callback);
+    }
+
+    public void subscribeSinglePatient(String patientId, ICallback<Map<String, Object>> callback) {
+        this.dataAccess.subscribeContainerItem("patients", patientId, callback);
     }
 
     @Override
-    public void tryLogin(String id, String password, ICallback<IStaff> callback) {
-        this.dataAccess.fetchContainerItem("staff", id, new ICallback<Map<String, Object>>() {
-            @Override
-            public void onCallback(Map<String, Object> stringObjectMap) {
-                if (stringObjectMap.get("password").toString().equals(password)) { // TODO NULL CHECK
-                    callback.onCallback(IStaff.getNewInstance(id));
-                } else {
-                    callback.onCallback(null);
-                }
-            }
-        });
+    public boolean tryLogin(Map<String, Object> singleStaffMap, String id, String password) {
+        if (singleStaffMap.get("password").toString().equals(password)) { // TODO NULL CHECK
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
