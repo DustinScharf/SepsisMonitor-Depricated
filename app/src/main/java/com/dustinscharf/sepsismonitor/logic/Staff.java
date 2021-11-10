@@ -14,7 +14,7 @@ public class Staff implements IStaff {
     private final String id;
 
     public Staff(String id) {
-        this.dataAccess = IDataAccess.getNewInstance("hospital");
+        this.dataAccess = IDataAccess.getInstance();
 
         this.id = id;
     }

@@ -13,7 +13,7 @@ public class Patient implements IPatient {
     private final String id;
 
     public Patient(String id) {
-        this.dataAccess = IDataAccess.getNewInstance("hospital");
+        this.dataAccess = IDataAccess.getInstance();
 
         this.id = id;
     }
