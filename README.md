@@ -5,8 +5,7 @@ Here is your sepsis department management app!
 ## User Guide
 1. Start the app
 2. Login with your credentials
-3. Click on patients to change their phase (or assign them to a staff)  
-<br>  
+3. Click on patients to change their phase (or assign them to a staff)
 ## Developer Guide
 The app is build by 3 layers.  
 1. TOP / GUI Layer
