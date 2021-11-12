@@ -1,5 +1,7 @@
 package com.dustinscharf.sepsismonitor.logic;
 
+import com.dustinscharf.sepsismonitor.R;
+import com.dustinscharf.sepsismonitor.data.DataAccess;
 import com.dustinscharf.sepsismonitor.data.IDataAccess;
 import com.dustinscharf.sepsismonitor.util.ICallback;
 
@@ -7,12 +9,44 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Hospital implements IHospital {
+    private static Hospital hospitalSingleton;
+    public static Hospital getInstance() {
+        if (hospitalSingleton == null) {
+            hospitalSingleton = new Hospital();
+        }
+        return hospitalSingleton;
+    }
+
     private final IDataAccess dataAccess;
 
-    public Hospital() {
+    private String loggedInStaffId;
+    private boolean loggedInStaffIsLMMP;
+
+    private Hospital() {
         this.dataAccess = IDataAccess.getInstance();
+    }
+
+    @Override
+    public String getLoggedInStaffId() {
+        return this.loggedInStaffId;
+    }
+
+    @Override
+    public void setLoggedInStaffId(String id) {
+        this.loggedInStaffId = id;
+    }
+
+    @Override
+    public boolean loggedInStaffIsLMMP() {
+        return this.loggedInStaffIsLMMP;
+    }
+
+    @Override
+    public void setLoggedInStaffIsLMMP(boolean isLMMP) {
+        this.loggedInStaffIsLMMP = isLMMP;
     }
 
     // Hospital access
@@ -82,17 +116,21 @@ public class Hospital implements IHospital {
     }
 
     @Override
-    public Map<String, Object> getPatientsByStaff(Map<String, Object> fullHospitalMap, String staffId) {
-        Map<String, Object> patients = new HashMap<>();
+    public ArrayList<HashMap<String, Object>> getPatientsByStaff(Map<String, Object> fullHospitalMap, String staffId) {
+        ArrayList<HashMap<String, Object>> patients = new ArrayList<>();
+
+        Map<String, Object> allPatients = (Map<String, Object>) fullHospitalMap.get("patients");
 
         Map<String, Object> allStaffs = (Map<String, Object>) fullHospitalMap.get("staff");
         Map<String, Object> singleStaff = (Map<String, Object>) allStaffs.get(staffId);
         Map<String, Object> singleStaffsPatients = (Map<String, Object>) singleStaff.get("patients");
 
-        Map<String, Object> allPatients = (Map<String, Object>) fullHospitalMap.get("patients");
-        for (String patientId : singleStaffsPatients.keySet()) {
-            patients.put(patientId, allPatients.get(patientId));
+        for (String patientKey : singleStaffsPatients.keySet()) {
+            HashMap<String, Object> patient = new HashMap<>();
+            patient.put(patientKey, allPatients.get(patientKey));
+            patients.add(patient);
         }
+
         return patients;
     }
 
@@ -108,6 +146,7 @@ public class Hospital implements IHospital {
         HashMap<String, Object> addItem = new HashMap<>();
         addItem.put("firstName", firstName);
         addItem.put("lastName", lastName);
+        addItem.put("phase", 0);
         this.dataAccess.addItemToContainer("patients", id, addItem);
     }
 
@@ -120,5 +159,36 @@ public class Hospital implements IHospital {
                 dataAccess.editItemInContainer("staff", staffId, stringObjectMap);
             }
         });
+    }
+
+    public String findStaffIdByAssignedPatientId(Map<String, Object> staffMap, String patientId) {
+        for (Map.Entry<String, Object> staffInfo : staffMap.entrySet()) {
+
+            Map<String, Object> staff = (Map<String, Object>) staffInfo.getValue();
+
+            if (staff.get("patients") != null && ((Map<String, Object>) staff.get("patients")).containsKey(patientId)) {
+                return staffInfo.getKey();
+            }
+        }
+        return "NOT ASSIGNED";
+    }
+
+    public String getPhaseById(int id) {
+        switch (id) {
+            case 0:
+                return "Registration";
+            case 1:
+                return "ER Triage";
+            case 2:
+                return "ER Sepsis Triage";
+            case 3:
+                return "IV Antibiotics";
+            case 4:
+                return "Admission";
+            case 5:
+                return "Release";
+            default:
+                return "Archive...";
+        }
     }
 }
