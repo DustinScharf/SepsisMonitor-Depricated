@@ -111,7 +111,6 @@ public class DataAccess implements IDataAccess {
         this.databaseReference.child(containerKey).child(itemKey).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                System.out.println(snapshot);
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
             }
 
