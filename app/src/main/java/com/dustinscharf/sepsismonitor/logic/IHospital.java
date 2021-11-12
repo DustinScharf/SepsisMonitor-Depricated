@@ -46,21 +46,28 @@ public interface IHospital {
     public void subscribeSinglePatient(String patientId, ICallback<Map<String, Object>> callback);
 
 
+    // Login
     public boolean tryLogin(Map<String, Object> singleStaffMap, String id, String password);
 
 
+    // Extract patients
     public ArrayList<HashMap<String, Object>> getPatients(Map<String, Object> patientsMap);
 
     public ArrayList<HashMap<String, Object>> getPatientsByStaff(Map<String, Object> fullHospitalMap, String staffId);
 
 
-    public void putPatientIntoPhase(String patientId, int phase);
-
+    // Patient operations
     public void addPatient(String id, String firstName, String lastName);
 
     public void assignPatientToStaff(String patientId, String staffId);
 
+    public void putPatientIntoPhase(String patientId, int phase);
+
+
+    // Find
     public String findStaffIdByAssignedPatientId(Map<String, Object> staffMap, String patientId);
 
+
+    // Util
     public String getPhaseById(int id);
 }

@@ -13,6 +13,7 @@ import java.util.Objects;
 
 public class Hospital implements IHospital {
     private static Hospital hospitalSingleton;
+
     public static Hospital getInstance() {
         if (hospitalSingleton == null) {
             hospitalSingleton = new Hospital();
@@ -49,25 +50,27 @@ public class Hospital implements IHospital {
         this.loggedInStaffIsLMMP = isLMMP;
     }
 
-    // Hospital access
+    @Override
     public void fetchHospital(ICallback<Map<String, Object>> callback) {
         this.dataAccess.fetch(callback);
     }
 
+    @Override
     public void subscribeHospital(ICallback<Map<String, Object>> callback) {
         this.dataAccess.subscribe(callback);
     }
 
-    // Staff access
+    @Override
     public void fetchStaff(ICallback<Map<String, Object>> callback) {
         this.dataAccess.fetchContainer("staff", callback);
     }
 
+    @Override
     public void fetchSingleStaff(String staffId, ICallback<Map<String, Object>> callback) {
         this.dataAccess.fetchContainerItem("staff", staffId, callback);
     }
 
-
+    @Override
     public void subscribeStaff(ICallback<Map<String, Object>> callback) {
         this.dataAccess.subscribeContainer("staff", callback);
     }
@@ -76,20 +79,22 @@ public class Hospital implements IHospital {
         this.dataAccess.subscribeContainerItem("staff", staffId, callback);
     }
 
-    // Patient access
+    @Override
     public void fetchPatients(ICallback<Map<String, Object>> callback) {
         this.dataAccess.fetchContainer("patients", callback);
     }
 
+    @Override
     public void fetchSinglePatient(String patientId, ICallback<Map<String, Object>> callback) {
         this.dataAccess.fetchContainerItem("patients", patientId, callback);
     }
 
-
+    @Override
     public void subscribePatients(ICallback<Map<String, Object>> callback) {
         this.dataAccess.subscribeContainer("patients", callback);
     }
 
+    @Override
     public void subscribeSinglePatient(String patientId, ICallback<Map<String, Object>> callback) {
         this.dataAccess.subscribeContainerItem("patients", patientId, callback);
     }
@@ -103,6 +108,7 @@ public class Hospital implements IHospital {
         }
     }
 
+    @Override
     public ArrayList<HashMap<String, Object>> getPatients(Map<String, Object> patientsMap) {
         ArrayList<HashMap<String, Object>> patients = new ArrayList<>();
 
@@ -161,6 +167,7 @@ public class Hospital implements IHospital {
         });
     }
 
+    @Override
     public String findStaffIdByAssignedPatientId(Map<String, Object> staffMap, String patientId) {
         for (Map.Entry<String, Object> staffInfo : staffMap.entrySet()) {
 
@@ -173,6 +180,7 @@ public class Hospital implements IHospital {
         return "NOT ASSIGNED";
     }
 
+    @Override
     public String getPhaseById(int id) {
         switch (id) {
             case 0:
