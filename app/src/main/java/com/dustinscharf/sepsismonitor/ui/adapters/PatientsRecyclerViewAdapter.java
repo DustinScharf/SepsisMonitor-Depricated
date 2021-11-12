@@ -3,7 +3,6 @@ package com.dustinscharf.sepsismonitor.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,15 +12,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dustinscharf.sepsismonitor.R;
 import com.dustinscharf.sepsismonitor.logic.IHospital;
+import com.dustinscharf.sepsismonitor.ui.StartActivity;
+import com.dustinscharf.sepsismonitor.util.ICallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRecyclerViewAdapter.ViewHolder> {
+    private StartActivity startActivityContext;
+
     private ArrayList<HashMap<String, Object>> patients = new ArrayList<>();
 
-    private IHospital hospital = IHospital.getNewInstance();
+    private final IHospital hospital;
+
+    public PatientsRecyclerViewAdapter(StartActivity startActivityContext, IHospital hospital) {
+        this.startActivityContext = startActivityContext;
+        this.hospital = hospital;
+    }
 
     @NonNull
     @Override
@@ -36,22 +44,59 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
         String patientKey = new ArrayList<>(patientContainer.keySet()).get(0);
         HashMap<String, Object> patient = (HashMap<String, Object>) patientContainer.get(patientKey);
 
-//        holder.patientPhaseImageView.setImageIcon(null); // TODO
+        if (patient == null) {
+            holder.patientNameTextView.setText("Patient could not load");
+            holder.patientPhaseTextView.setText("There is a patient id assigned to you of a patient that is not in the database, " +
+                    "please contact support immanently");
+            holder.patientsStaffTextView.setText("ERROR (Read left)");
+            return;
+        }
+
+        int patientPhaseId = (int) ((long) patient.get("phase"));
+        int iconId = 0;
+        switch (patientPhaseId) {
+            case 0:
+                iconId = R.mipmap.registration_icon;
+                break;
+            case 1:
+                iconId = R.mipmap.er_triage_icon;
+                break;
+            case 2:
+                iconId = R.mipmap.er_sepsis_triage_icon;
+                break;
+            case 3:
+                iconId = R.mipmap.iv_antibiotics_icon;
+                break;
+            case 4:
+                iconId = R.mipmap.admission_icon;
+                break;
+            case 5:
+                iconId = R.mipmap.release_icon;
+                break;
+            default:
+                iconId = R.drawable.ic_archive;
+                break;
+        }
+        holder.patientPhaseImageView.setImageResource(iconId);
+
         holder.patientNameTextView.setText(patient.get("firstName").toString() + " " + patient.get("lastName").toString());
-//        int finalPosition = position;
-//        holder.patientToNextPhaseButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                hospital.putPatientIntoPhase(patients.get(finalPosition).getKey(), (Integer) patients.get(finalPosition).getValue().get("phase") + 1);
-//            }
-//        });
-//
-//        holder.parent.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // TODO
-//            }
-//        });
+
+        holder.patientPhaseTextView.setText(hospital.getPhaseById(patientPhaseId));
+
+        // todo should be a fetch, but the db does not have this double side relationship
+        hospital.subscribeStaff(new ICallback<Map<String, Object>>() {
+            @Override
+            public void onCallback(Map<String, Object> stringObjectMap) {
+                holder.patientsStaffTextView.setText(hospital.findStaffIdByAssignedPatientId(stringObjectMap, patientKey).toUpperCase());
+            }
+        });
+
+        holder.patientListItemParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityContext.popUpPatientOverview(patientKey);
+            }
+        });
     }
 
     @Override
@@ -65,20 +110,26 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ConstraintLayout parent;
+        private ConstraintLayout patientListItemParent;
 
         private ImageView patientPhaseImageView;
+
         private TextView patientNameTextView;
-        private Button patientToNextPhaseButton;
+        private TextView patientPhaseTextView;
+
+        private TextView patientsStaffTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            this.parent = itemView.findViewById(R.id.parent);
+            this.patientListItemParent = itemView.findViewById(R.id.patientListItemParent);
 
             this.patientPhaseImageView = itemView.findViewById(R.id.patientPhaseImageView);
+
             this.patientNameTextView = itemView.findViewById(R.id.patientNameTextView);
-            this.patientToNextPhaseButton = itemView.findViewById(R.id.patientToNextPhaseButton);
+            this.patientPhaseTextView = itemView.findViewById(R.id.patientPhaseTextView);
+
+            this.patientsStaffTextView = itemView.findViewById(R.id.patientsStaffTextView);
         }
     }
 }
