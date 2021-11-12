@@ -37,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onCallback(Map<String, Object> stringObjectMap) {
                         boolean loginSuccess = hospital.tryLogin(stringObjectMap, inputId, inputPassword);
                         if (loginSuccess) {
+                            hospital.setLoggedInStaffId(inputId);
+                            hospital.setLoggedInStaffIsLMMP((Boolean) stringObjectMap.get("isLMMP"));
                             openStartActivity();
                         } else {
                             // TODO TOAST
