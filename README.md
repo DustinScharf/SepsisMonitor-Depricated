@@ -12,6 +12,7 @@ The app is build by 3 layers.
 1. TOP / GUI Layer
 2. MIDDLE / Logic Layer
 3. BOTTOM / Data(base-access) Layer  
+
 Communication between layers is only done by interfaces.
 This allows us to change every layer.
 If you would like a WebApp instead, only change the GUI Layer and you are done.
