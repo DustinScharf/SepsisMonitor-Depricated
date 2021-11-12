@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/parent"
+    android:id="@+id/patientListItemParent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -33,19 +33,30 @@
                 android:id="@+id/patientNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/loading"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/patientToNextPhaseButton"
                 app:layout_constraintStart_toEndOf="@+id/patientPhaseImageView"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/patientToNextPhaseButton"
+            <TextView
+                android:id="@+id/patientPhaseTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:alpha="0.75"
+                android:text="@string/loading"
+                app:layout_constraintStart_toStartOf="@+id/patientNameTextView"
+                app:layout_constraintTop_toBottomOf="@+id/patientNameTextView" />
+
+            <TextView
+                android:id="@+id/patientsStaffTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/next_phase"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:alpha="0.75"
+                android:text="@string/loading"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
