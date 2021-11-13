@@ -11,6 +11,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
+/**
+ * This class can be used to access a Firebase Realtime Database
+ */
 public class DataAccess implements IDataAccess {
     private static DataAccess dataAccessSingleton;
 
