@@ -78,7 +78,7 @@ public interface IDataAccess {
     public void addItemToContainer(String containerKey, String itemKey, Map<String, Object> addItem);
 
     /**
-     * Edit an item in a specific list
+     * Edits an item in a specific list
      *
      * @param containerKey the type of the object to edit
      * @param itemKey      the key of the object to edit
