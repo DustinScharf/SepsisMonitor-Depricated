@@ -17,6 +17,12 @@ import java.util.Map;
 public class DataAccess implements IDataAccess {
     private static DataAccess dataAccessSingleton;
 
+    /**
+     * Gives a instance of this DataAccess object
+     * The object is a singleton
+     *
+     * @return singleton instance of DataAccess
+     */
     public static DataAccess getInstance() {
         if (dataAccessSingleton == null) {
             dataAccessSingleton = new DataAccess();
