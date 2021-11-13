@@ -41,6 +41,11 @@ public class DataAccess implements IDataAccess {
         this.databaseReference = firebaseDatabase.getReference(REFERENCE);
     }
 
+    /**
+     * Fetches ("one time load") the whole database
+     *
+     * @param callback a callback that is fired when the data is received
+     */
     @Override
     public void fetch(ICallback<Map<String, Object>> callback) {
         this.databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -56,6 +61,12 @@ public class DataAccess implements IDataAccess {
         });
     }
 
+    /**
+     * Fetches ("one time load") all objects of a specific type from the database
+     *
+     * @param containerKey the type of the objects
+     * @param callback     a callback that is fired when the data is received
+     */
     @Override
     public void fetchContainer(String containerKey, ICallback<Map<String, Object>> callback) {
         this.databaseReference.child(containerKey).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -71,6 +82,13 @@ public class DataAccess implements IDataAccess {
         });
     }
 
+    /**
+     * Fetches ("one time load") a single objects of a specific type from the database
+     *
+     * @param containerKey the type of the object
+     * @param itemKey      the unique key of the object
+     * @param callback     a callback that is fired when the data is received
+     */
     @Override
     public void fetchContainerItem(String containerKey, String itemKey, ICallback<Map<String, Object>> callback) {
         this.databaseReference.child(containerKey).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -86,6 +104,11 @@ public class DataAccess implements IDataAccess {
         });
     }
 
+    /**
+     * Subscribes ("load every change, whenever it will happen") the whole database
+     *
+     * @param callback a callback that is fired whenever data in the database changes and the data is fully received
+     */
     @Override
     public void subscribe(ICallback<Map<String, Object>> callback) {
         this.databaseReference.addValueEventListener(new ValueEventListener() {
@@ -101,6 +124,12 @@ public class DataAccess implements IDataAccess {
         });
     }
 
+    /**
+     * Subscribes ("load every change, whenever it will happen") all objects of a specific type from the database
+     *
+     * @param containerKey the type of the objects
+     * @param callback     a callback that is fired whenever data in the database changes and the data is fully received
+     */
     @Override
     public void subscribeContainer(String containerKey, ICallback<Map<String, Object>> callback) {
         this.databaseReference.child(containerKey).addValueEventListener(new ValueEventListener() {
@@ -116,6 +145,13 @@ public class DataAccess implements IDataAccess {
         });
     }
 
+    /**
+     * Subscribes ("load every change, whenever it will happen") a single objects of a specific type from the database
+     *
+     * @param containerKey the type of the object
+     * @param itemKey      the unique key of the object
+     * @param callback     a callback that is fired whenever data in the database changes and the data is fully received
+     */
     @Override
     public void subscribeContainerItem(String containerKey, String itemKey, ICallback<Map<String, Object>> callback) {
         this.databaseReference.child(containerKey).child(itemKey).addValueEventListener(new ValueEventListener() {
