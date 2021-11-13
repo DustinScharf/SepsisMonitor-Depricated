@@ -30,6 +30,7 @@ public class DataAccess implements IDataAccess {
         return dataAccessSingleton;
     }
 
+    // This links to the SepsisMonitor Hospital Firebase Database, it can be changed to access other Firebase Databases
     private static final String URL = "https://sepsismonitor-default-rtdb.europe-west1.firebasedatabase.app";
     private static final String REFERENCE = "hospital";
 
