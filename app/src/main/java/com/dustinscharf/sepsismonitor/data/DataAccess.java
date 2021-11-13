@@ -167,16 +167,37 @@ public class DataAccess implements IDataAccess {
         });
     }
 
+    /**
+     * Adds an item to a specific item list
+     * (if item list does not exist, it will be created)
+     *
+     * @param containerKey the type of the object to add
+     * @param itemKey      the key of the object to add
+     * @param addItem      the item to add
+     */
     @Override
     public void addItemToContainer(String containerKey, String itemKey, Map<String, Object> addItem) {
         this.databaseReference.child(containerKey).child(itemKey).setValue(addItem); // TODO CHECK FOR SUCCESS
     }
 
+    /**
+     * Edit an item in a specific list
+     *
+     * @param containerKey the type of the object to edit
+     * @param itemKey      the key of the object to edit
+     * @param editItem     a map containing all the object changed like ("name", "Siegfried")
+     */
     @Override
     public void editItemInContainer(String containerKey, String itemKey, Map<String, Object> editItem) {
         this.databaseReference.child(containerKey).child(itemKey).updateChildren(editItem); // TODO CHECK FOR SUCCESS
     }
 
+    /**
+     * Removed an item from an item list
+     *
+     * @param containerKey the type of the object to remove
+     * @param itemKey      the key of the object to remove
+     */
     @Override
     public void removeItemFromContainer(String containerKey, String itemKey) {
         this.databaseReference.child(containerKey).child(itemKey).removeValue(); // TODO CHECK FOR SUCCESS
