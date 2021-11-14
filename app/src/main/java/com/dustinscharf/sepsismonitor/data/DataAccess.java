@@ -18,7 +18,7 @@ public class DataAccess implements IDataAccess {
     private static DataAccess dataAccessSingleton;
 
     /**
-     * Gives a instance of this DataAccess object
+     * Gives an instance of this DataAccess object
      * The object is a singleton
      *
      * @return singleton instance of DataAccess
@@ -44,16 +44,26 @@ public class DataAccess implements IDataAccess {
     /**
      * Fetches ("one time load") the whole database
      *
-     * @param callback a callback that is fired when the data is received
+     * @param callback a callback containing the received data that is fired when the data is received
      */
     @Override
     public void fetch(ICallback<Map<String, Object>> callback) {
         this.databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            /**
+             * Event fired whenever data in the database changes
+             *
+             * @param snapshot the (new) data in the database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
             }
 
+            /**
+             * Event fired whenever the database connection cancels
+             *
+             * @param error the error sent by the database
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // TODO ERROR HANDLE
@@ -65,16 +75,26 @@ public class DataAccess implements IDataAccess {
      * Fetches ("one time load") all objects of a specific type from the database
      *
      * @param containerKey the type of the objects
-     * @param callback     a callback that is fired when the data is received
+     * @param callback     a callback containing the received data that is fired when the data is received
      */
     @Override
     public void fetchContainer(String containerKey, ICallback<Map<String, Object>> callback) {
         this.databaseReference.child(containerKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            /**
+             * Event fired whenever data in the database changes
+             *
+             * @param snapshot the (new) data in the database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
             }
 
+            /**
+             * Event fired whenever the database connection cancels
+             *
+             * @param error the error sent by the database
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // TODO ERROR HANDLE
@@ -87,16 +107,26 @@ public class DataAccess implements IDataAccess {
      *
      * @param containerKey the type of the object
      * @param itemKey      the unique key of the object
-     * @param callback     a callback that is fired when the data is received
+     * @param callback     a callback containing the received data that is fired when the data is received
      */
     @Override
     public void fetchContainerItem(String containerKey, String itemKey, ICallback<Map<String, Object>> callback) {
         this.databaseReference.child(containerKey).child(itemKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            /**
+             * Event fired whenever data in the database changes
+             *
+             * @param snapshot the (new) data in the database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
             }
 
+            /**
+             * Event fired whenever the database connection cancels
+             *
+             * @param error the error sent by the database
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // TODO ERROR HANDLE
@@ -107,16 +137,26 @@ public class DataAccess implements IDataAccess {
     /**
      * Subscribes ("load every change, whenever it will happen") the whole database
      *
-     * @param callback a callback that is fired whenever data in the database changes and the data is fully received
+     * @param callback a callback containing the received data that is fired whenever data in the database changes and the data is fully received
      */
     @Override
     public void subscribe(ICallback<Map<String, Object>> callback) {
         this.databaseReference.addValueEventListener(new ValueEventListener() {
+            /**
+             * Event fired whenever data in the database changes
+             *
+             * @param snapshot the (new) data in the database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
             }
 
+            /**
+             * Event fired whenever the database connection cancels
+             *
+             * @param error the error sent by the database
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // TODO ERROR HANDLE
@@ -128,16 +168,26 @@ public class DataAccess implements IDataAccess {
      * Subscribes ("load every change, whenever it will happen") all objects of a specific type from the database
      *
      * @param containerKey the type of the objects
-     * @param callback     a callback that is fired whenever data in the database changes and the data is fully received
+     * @param callback     a callback containing the received data that is fired whenever data in the database changes and the data is fully received
      */
     @Override
     public void subscribeContainer(String containerKey, ICallback<Map<String, Object>> callback) {
         this.databaseReference.child(containerKey).addValueEventListener(new ValueEventListener() {
+            /**
+             * Event fired whenever data in the database changes
+             *
+             * @param snapshot the (new) data in the database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
             }
 
+            /**
+             * Event fired whenever the database connection cancels
+             *
+             * @param error the error sent by the database
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // TODO ERROR HANDLE
@@ -150,16 +200,26 @@ public class DataAccess implements IDataAccess {
      *
      * @param containerKey the type of the object
      * @param itemKey      the unique key of the object
-     * @param callback     a callback that is fired whenever data in the database changes and the data is fully received
+     * @param callback     a callback containing the received data that is fired whenever data in the database changes and the data is fully received
      */
     @Override
     public void subscribeContainerItem(String containerKey, String itemKey, ICallback<Map<String, Object>> callback) {
         this.databaseReference.child(containerKey).child(itemKey).addValueEventListener(new ValueEventListener() {
+            /**
+             * Event fired whenever data in the database changes
+             *
+             * @param snapshot the (new) data in the database
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 callback.onCallback((Map<String, Object>) snapshot.getValue()); // TODO CHECK CAST
             }
 
+            /**
+             * Event fired whenever the database connection cancels
+             *
+             * @param error the error sent by the database
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // TODO ERROR HANDLE

@@ -11,7 +11,7 @@ import java.util.Map;
 public interface IDataAccess {
 
     /**
-     * Gives a instance of the DataAccess implementation
+     * Gives an instance of the DataAccess implementation
      *
      * @return instance of the DataAccess implementation
      */
@@ -22,7 +22,7 @@ public interface IDataAccess {
     /**
      * Fetches ("one time load") the whole database
      *
-     * @param callback a callback that is fired when the data is received
+     * @param callback a callback containing the received data that is fired when the data is received
      */
     public void fetch(ICallback<Map<String, Object>> callback);
 
@@ -30,7 +30,7 @@ public interface IDataAccess {
      * Fetches ("one time load") all objects of a specific type from the database
      *
      * @param containerKey the type of the objects
-     * @param callback     a callback that is fired when the data is received
+     * @param callback     a callback containing the received data that is fired when the data is received
      */
     public void fetchContainer(String containerKey, ICallback<Map<String, Object>> callback);
 
@@ -39,14 +39,14 @@ public interface IDataAccess {
      *
      * @param containerKey the type of the object
      * @param itemKey      the unique key of the object
-     * @param callback     a callback that is fired when the data is received
+     * @param callback     a callback containing the received data that is fired when the data is received
      */
     public void fetchContainerItem(String containerKey, String itemKey, ICallback<Map<String, Object>> callback);
 
     /**
      * Subscribes ("load every change, whenever it will happen") the whole database
      *
-     * @param callback a callback that is fired whenever data in the database changes and the data is fully received
+     * @param callback a callback containing the received data that is fired whenever data in the database changes and the data is fully received
      */
     public void subscribe(ICallback<Map<String, Object>> callback);
 
@@ -54,7 +54,7 @@ public interface IDataAccess {
      * Subscribes ("load every change, whenever it will happen") all objects of a specific type from the database
      *
      * @param containerKey the type of the objects
-     * @param callback     a callback that is fired whenever data in the database changes and the data is fully received
+     * @param callback     a callback containing the received data that is fired whenever data in the database changes and the data is fully received
      */
     public void subscribeContainer(String containerKey, ICallback<Map<String, Object>> callback);
 
@@ -63,7 +63,7 @@ public interface IDataAccess {
      *
      * @param containerKey the type of the object
      * @param itemKey      the unique key of the object
-     * @param callback     a callback that is fired whenever data in the database changes and the data is fully received
+     * @param callback     a callback containing the received data that is fired whenever data in the database changes and the data is fully received
      */
     public void subscribeContainerItem(String containerKey, String itemKey, ICallback<Map<String, Object>> callback);
 
