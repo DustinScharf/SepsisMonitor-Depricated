@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SepsisMonitor">
         <activity
+            android:name=".ui.PatientActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.StartActivity"
             android:exported="false" />
         <activity
