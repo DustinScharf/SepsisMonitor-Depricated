@@ -12,6 +12,7 @@
     <string name="er_sepsis_triage">ER S T</string>
     <string name="select_phase">Select Phase</string>
     <string name="assign">Assign</string>
+    <string name="assign_to_patient">Assign to Patient</string>
     <string name="name">Name</string>
     <string name="staff_id">Staff ID</string>
     <string name="enter_id">Enter ID</string>
@@ -21,4 +22,6 @@
     <string name="app_description">The Sepsis Department Management App</string>
     <string name="enter_credentials">Please Enter Your Credentials</string>
     <string name="add_patient">Add Patient</string>
+    <string name="remove">Remove</string>
+    <string name="back">Back</string>
 </resources>
