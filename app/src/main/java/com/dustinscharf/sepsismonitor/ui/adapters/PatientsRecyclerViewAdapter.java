@@ -13,12 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dustinscharf.sepsismonitor.R;
 import com.dustinscharf.sepsismonitor.logic.IHospital;
 import com.dustinscharf.sepsismonitor.ui.StartActivity;
-import com.dustinscharf.sepsismonitor.util.ICallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * A scrollable list of patients
+ */
 public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRecyclerViewAdapter.ViewHolder> {
     private StartActivity startActivityContext;
 
@@ -26,11 +27,24 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
 
     private final IHospital hospital;
 
+    /**
+     * The constructor to create the scrollable list of patients
+     *
+     * @param startActivityContext the caller activity (i. e. the start activity)
+     * @param hospital             the hospital management object
+     */
     public PatientsRecyclerViewAdapter(StartActivity startActivityContext, IHospital hospital) {
         this.startActivityContext = startActivityContext;
         this.hospital = hospital;
     }
 
+    /**
+     * Creates a layout for this list of patients
+     *
+     * @param parent   the parent containing this list
+     * @param viewType the type of the parent
+     * @return the layout for this list of patients
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -38,6 +52,12 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
         return new ViewHolder(view);
     }
 
+    /**
+     * Assigns data, functionality and data to the list items
+     *
+     * @param holder   the parent containing this list
+     * @param position the position of the currently creating list element (in patients: ArrayList)
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         HashMap<String, Object> patientContainer = this.patients.get(position);
@@ -53,7 +73,7 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
         }
 
         int patientPhaseId = (int) ((long) patient.get("phase"));
-        int iconId = 0;
+        int iconId;
         switch (patientPhaseId) {
             case 0:
                 iconId = R.mipmap.registration_icon;
@@ -84,31 +104,39 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
         holder.patientPhaseTextView.setText(hospital.getPhaseById(patientPhaseId));
 
         // todo should be a fetch, but the db does not have this double side relationship
-        hospital.subscribeStaff(new ICallback<Map<String, Object>>() {
-            @Override
-            public void onCallback(Map<String, Object> stringObjectMap) {
-                holder.patientsStaffTextView.setText(hospital.findStaffIdByAssignedPatientId(stringObjectMap, patientKey).toUpperCase());
-            }
-        });
+        hospital.subscribeStaff(stringObjectMap -> holder.patientsStaffTextView.setText(hospital.findStaffIdByAssignedPatientId(stringObjectMap, patientKey).toUpperCase()));
 
-        holder.patientListItemParent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityContext.popUpPatientOverview(patientKey);
-            }
+        holder.patientListItemParent.setOnClickListener(v -> startActivityContext.popUpPatientOverview(patientKey));
+        holder.patientListItemParent.setOnLongClickListener(v -> {
+            startActivityContext.openPatientActivity(patientKey);
+            return true;
         });
     }
 
+    /**
+     * Returns how many items are in this list
+     *
+     * @return the numeric amount of items in this list
+     */
     @Override
     public int getItemCount() {
         return patients.size();
     }
 
+    /**
+     * Sets the patient data that will be displayed in this list
+     * (And visually reloads the list to display changes in the data set)
+     *
+     * @param patients the patients that will be displayed in this list
+     */
     public void setPatients(ArrayList<HashMap<String, Object>> patients) {
         this.patients = patients;
         notifyDataSetChanged();
     }
 
+    /**
+     * The holder (parent) for the list elements
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ConstraintLayout patientListItemParent;
 
@@ -119,6 +147,11 @@ public class PatientsRecyclerViewAdapter extends RecyclerView.Adapter<PatientsRe
 
         private TextView patientsStaffTextView;
 
+        /**
+         * Creates the holder (parent) for the list elements and initializes its fields
+         *
+         * @param itemView the parent containing the list elements
+         */
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
