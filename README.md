@@ -22,3 +22,4 @@ and use the app as you know it.
 
 ### Sample Data Flow
 ![Login Activity Sequence Diagram](./diagrams/LoginActivity_onCreate.png "Login Activity Data Flow")
+*outdated
